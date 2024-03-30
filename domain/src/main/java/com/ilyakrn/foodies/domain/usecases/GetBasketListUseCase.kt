@@ -1,5 +1,6 @@
 package com.ilyakrn.foodies.domain.usecases
 
+import android.util.Log
 import com.ilyakrn.foodies.domain.models.core.Product
 import com.ilyakrn.foodies.domain.models.core.Tag
 import com.ilyakrn.foodies.domain.models.extended.ProductExtended
@@ -10,48 +11,43 @@ import com.ilyakrn.foodies.domain.repositories.TagRepository
 
 class GetBasketListUseCase(private val productRepository: ProductRepository, private val tagRepository: TagRepository, private val basketRepository: BasketRepository) {
 
-    fun invoke(): List<SelectedProductExtended>{
-        val result = ArrayList<SelectedProductExtended>()
-
-        val selectedProducts = basketRepository.getSelectedProductList()
-        val productTags = tagRepository.getTagList()
-        val products = productRepository.getProductList()
-        selectedProducts.forEach {selectedProduct ->
-            var product: Product? = null
-            products.stream().forEach {
-                if(selectedProduct.productId == it.id){
-                    product = it;
-                }
-            }
-            product?.let {
-                val tags = ArrayList<Tag>()
-                productTags.forEach { tag->
-                    it.tagIds.forEach{tagId ->
-                        if(tag.id == tagId)
-                            tags.add(tag);
+    fun invoke(listener: (List<SelectedProductExtended>) -> Unit){
+        tagRepository.getTagList{productTags ->
+            productRepository.getProductList{products ->
+                val result = ArrayList<SelectedProductExtended>()
+                basketRepository.getSelectedProductList().forEach { selectedProduct ->
+                    products.stream().forEach {
+                        if(selectedProduct.productId == it.id){
+                            val tags = ArrayList<Tag>()
+                            productTags.forEach { tag->
+                                it.tagIds.forEach{tagId ->
+                                    if(tag.id == tagId)
+                                        tags.add(tag);
+                                }
+                            }
+                            val productExtended = ProductExtended(
+                                it.id,
+                                it.categoryId,
+                                it.name,
+                                it.description,
+                                it.image,
+                                it.priceCurrent,
+                                it.priceOld,
+                                it.measure,
+                                it.measureUnit,
+                                it.energyPer100Grams,
+                                it.proteinsPer100Grams,
+                                it.fatsPer100Grams,
+                                it.carbohydratesPer100Grams,
+                                tags)
+                            result.add(SelectedProductExtended(productExtended, selectedProduct.count))
+                        }
                     }
                 }
-                val productExtended =
-                    ProductExtended(
-                    it.id,
-                    it.categoryId,
-                    it.name,
-                    it.description,
-                    it.image,
-                    it.priceCurrent,
-                    it.priceOld,
-                    it.measure,
-                    it.measureUnit,
-                    it.energyPer100Grams,
-                    it.proteinsPer100Grams,
-                    it.fatsPer100Grams,
-                    it.carbohydratesPer100Grams,
-                    productTags)
-                result.add(SelectedProductExtended(productExtended, selectedProduct.count))
+                listener(result)
             }
-        }
 
-        return result
+        }
     }
 
 }
