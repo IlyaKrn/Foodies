@@ -16,7 +16,7 @@ class GetProductListUseCase(private val productRepository: ProductRepository, pr
             val productTags = ArrayList<Tag>()
             tags.forEach { tag->
                 product.tagIds.forEach{tagId ->
-                    if(tag.id.equals(tagId))
+                    if(tag.id == tagId)
                         productTags.add(tag);
                 }
             }
