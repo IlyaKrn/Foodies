@@ -11,9 +11,15 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class TagRepositoryImpl : TagRepository {
+    companion object {
+        var list: ArrayList<Tag>? = null
+    }
     override fun getTagList(listener: (List<Tag>) -> Unit) {
+        list?.let {
+            listener(it)
+            return
+        }
         val call = RetrofitClient.getClient().create(RetorfitTagService::class.java).getTagList()
-
         call.enqueue(object : Callback<List<TagJsonModel>> {
             override fun onResponse(call: Call<List<TagJsonModel>>, response: Response<List<TagJsonModel>>) {
                 if(response.isSuccessful && response.body() != null){
@@ -23,6 +29,7 @@ class TagRepositoryImpl : TagRepository {
                             it.id ?: -1,
                             it.name ?: ""))
                     }
+                    list = res
                     listener(res)
                 }else{
                     listener(ArrayList())

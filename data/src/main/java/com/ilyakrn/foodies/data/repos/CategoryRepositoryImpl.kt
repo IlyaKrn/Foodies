@@ -13,9 +13,18 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class CategoryRepositoryImpl : CategoryRepository {
-    override fun getCategoryList(listener: (List<Category>) -> Unit) {
-        val call = RetrofitClient.getClient().create(RetorfitCategoryService::class.java).getCategoryList()
 
+
+    companion object {
+        var list: ArrayList<Category>? = null
+    }
+
+    override fun getCategoryList(listener: (List<Category>) -> Unit) {
+        list?.let {
+            listener(it)
+            return
+        }
+        val call = RetrofitClient.getClient().create(RetorfitCategoryService::class.java).getCategoryList()
         call.enqueue(object : Callback<List<CategoryJsonModel>> {
             override fun onResponse(call: Call<List<CategoryJsonModel>>, response: Response<List<CategoryJsonModel>>) {
                 if(response.isSuccessful && response.body() != null){
@@ -26,6 +35,7 @@ class CategoryRepositoryImpl : CategoryRepository {
                             it.name ?: ""
                         ))
                     }
+                    list = res
                     listener(res)
                 }else{
                     listener(ArrayList())

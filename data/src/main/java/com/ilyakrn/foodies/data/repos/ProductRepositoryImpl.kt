@@ -13,9 +13,16 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProductRepositoryImpl : ProductRepository {
-    override fun getProductList(listener: (List<Product>) -> Unit) {
-        val call = RetrofitClient.getClient().create(RetorfitProductService::class.java).getProductList()
 
+    companion object {
+        var list: ArrayList<Product>? = null
+    }
+    override fun getProductList(listener: (List<Product>) -> Unit) {
+        list?.let {
+            listener(it)
+            return
+        }
+        val call = RetrofitClient.getClient().create(RetorfitProductService::class.java).getProductList()
         call.enqueue(object : Callback<List<ProductJsonModel>> {
             override fun onResponse(call: Call<List<ProductJsonModel>>, response: Response<List<ProductJsonModel>>) {
                 if(response.isSuccessful && response.body() != null){
@@ -37,6 +44,7 @@ class ProductRepositoryImpl : ProductRepository {
                             (it.carbohydrates_per_100_grams  ?: -1) as Double,
                         it.tag_ids ?: ArrayList()))
                     }
+                    list = res
                     listener(res)
                 }else{
                     listener(ArrayList())

@@ -15,7 +15,7 @@ class RemoveProductFromBasketUseCase(private val basketRepository: BasketReposit
         try {
             basketRepository.getSelectedProductList().forEach {
                 if (it.productId == productId) {
-                    val c: Int = it.count;
+                    val c: Int = it.count
                     if (c == 1)
                         basketRepository.removeSelectedProduct(productId)
                     else
