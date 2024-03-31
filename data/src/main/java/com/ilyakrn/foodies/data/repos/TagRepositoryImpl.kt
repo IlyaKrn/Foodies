@@ -19,7 +19,9 @@ class TagRepositoryImpl : TagRepository {
                 if(response.isSuccessful && response.body() != null){
                     val res = ArrayList<Tag>()
                     response.body()!!.forEach {
-                        res.add(Tag(it.id, it.name))
+                        res.add(Tag(
+                            it.id ?: -1,
+                            it.name ?: ""))
                     }
                     listener(res)
                 }else{

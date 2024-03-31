@@ -21,7 +21,10 @@ class CategoryRepositoryImpl : CategoryRepository {
                 if(response.isSuccessful && response.body() != null){
                     val res = ArrayList<Category>()
                     response.body()!!.forEach {
-                        res.add(Category(it.id, it.name))
+                        res.add(Category(
+                            it.id ?: -1,
+                            it.name ?: ""
+                        ))
                     }
                     listener(res)
                 }else{

@@ -22,20 +22,20 @@ class ProductRepositoryImpl : ProductRepository {
                     val res = ArrayList<Product>()
                     response.body()!!.forEach {
                         res.add(Product(
-                        it.id,
-                        it.category_id,
-                        it.name,
-                        it.description,
-                        it.image,
-                        it.price_current,
-                        it.price_old,
-                        it.measure,
-                        it.measure_unit,
-                        it.energy_per_100_grams,
-                        it.proteins_per_100_grams,
-                        it.fats_per_100_grams,
-                        it.carbohydrates_per_100_grams,
-                        it.tag_ids))
+                        it.id  ?: -1,
+                        it.category_id  ?: -1,
+                        it.name  ?: "",
+                        it.description  ?: "",
+                        it.image  ?: "",
+                        it.price_current  ?: -1,
+                        it.price_old  ?: -1,
+                        it.measure  ?: -1,
+                        it.measure_unit  ?: "",
+                            (it.energy_per_100_grams  ?: -1) as Double,
+                            (it.proteins_per_100_grams  ?: -1) as Double,
+                            (it.fats_per_100_grams  ?: -1) as Double,
+                            (it.carbohydrates_per_100_grams  ?: -1) as Double,
+                        it.tag_ids ?: ArrayList()))
                     }
                     listener(res)
                 }else{
