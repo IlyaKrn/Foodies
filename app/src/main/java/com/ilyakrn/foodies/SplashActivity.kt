@@ -19,13 +19,20 @@ class SplashActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            SplashScreen()
-            Thread{
-                Thread.sleep(3000)
-                val intent = Intent(this@SplashActivity, CatalogActivity::class.java)
-                startActivity(intent)
-                finish()
-            }.start()
+            FoodiesTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    SplashScreen()
+                    Thread{
+                        Thread.sleep(3000)
+                        val intent = Intent(this@SplashActivity, CatalogActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }.start()
+                }
+            }
         }
     }
 }

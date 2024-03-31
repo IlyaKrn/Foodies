@@ -46,112 +46,117 @@ import java.util.Collections
 @Composable
 fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemove: () -> Unit = {}) {
 
-    Column(modifier = Modifier
-        .width(170.dp)
-        .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.small)
+    Box(modifier = Modifier
+        .padding(4.dp)
     ){
-        Image(modifier = Modifier
-            .height(170.dp)
-            .width(170.dp),
-            painter = painterResource(id = R.drawable.img),
-            contentDescription = "image"
-        )
+
         Column(modifier = Modifier
-            .padding(16.dp)
+            .width(170.dp)
+            .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.small)
         ){
-            Text(
-                text = product.product.name,
-                style = MaterialTheme.typography.labelMedium
+            Image(modifier = Modifier
+                .height(170.dp)
+                .width(170.dp),
+                painter = painterResource(id = R.drawable.img),
+                contentDescription = "image"
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "${product.product.measure} ${product.product.measureUnit}",
-                style = MaterialTheme.typography.bodySmall,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            if(product.count == 0) {
-                Box(modifier = Modifier
-                    .shadow(4.dp)
-                    .fillMaxWidth()
-                    .background(
-                        MaterialTheme.colorScheme.background,
-                        MaterialTheme.shapes.small
-                    )
-                    .padding(8.dp)
-                    .clickable {
-                        onAdd()
-                    }
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                    ) {
-                       val rubles = product.product.priceCurrent / 100
-                       val cops = product.product.priceCurrent % 100
-                       val copsStr = if(cops > 9) ",$cops" else ",0$cops"
-                       val strCopsFin = if(copsStr == ",00") "" else copsStr
-                        Text(
-                            text = "${rubles}${strCopsFin} ₽",
-                        )
-                        if (product.product.priceOld !=-1) {
-                            Spacer(modifier = Modifier.width(8.dp))
-                            val rublesOld = product.product.priceOld / 100
-                            val copsOld = product.product.priceOld % 100
-                            val copsStrOld = if(copsOld > 9) ",$copsOld" else ",0$copsOld"
-                            val strCopsFinOld = if(copsStrOld == ",00") "" else copsStrOld
-                            Text(
-                                text = "${rublesOld}${strCopsFinOld} ₽",
-                                style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough)
-                            )
-                        }
-                    }
-                }
-            }
-            else {
-                Box(modifier = Modifier.fillMaxWidth()){
+            Column(modifier = Modifier
+                .padding(16.dp)
+            ){
+                Text(
+                    text = product.product.name,
+                    style = MaterialTheme.typography.labelMedium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "${product.product.measure} ${product.product.measureUnit}",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                if(product.count == 0) {
                     Box(modifier = Modifier
                         .shadow(4.dp)
-                        .size(40.dp)
-                        .align(Alignment.CenterStart)
+                        .fillMaxWidth()
                         .background(
                             MaterialTheme.colorScheme.background,
                             MaterialTheme.shapes.small
                         )
-                        .clickable {
-                            onRemove()
-                        }
-                    ) {
-                        Icon(modifier = Modifier.align(Alignment.Center),
-                            painter = painterResource(id = R.drawable.remove),
-                            contentDescription = "remove",
-                        )
-                    }
-                    Text(modifier = Modifier
-                        .align(Alignment.Center),
-                        text = product.count.toString()
-                    )
-                    Box(modifier = Modifier
-                        .shadow(4.dp)
-                        .size(40.dp)
-                        .align(Alignment.CenterEnd)
-                        .background(
-                            MaterialTheme.colorScheme.background,
-                            MaterialTheme.shapes.small
-                        )
+                        .padding(8.dp)
                         .clickable {
                             onAdd()
                         }
                     ) {
-                        Icon(modifier = Modifier.align(Alignment.Center),
-                            painter = painterResource(id = R.drawable.add),
-                            contentDescription = "remove",
-                        )
+                        Row(
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                        ) {
+                            val rubles = product.product.priceCurrent / 100
+                            val cops = product.product.priceCurrent % 100
+                            val copsStr = if(cops > 9) ",$cops" else ",0$cops"
+                            val strCopsFin = if(copsStr == ",00") "" else copsStr
+                            Text(
+                                text = "${rubles}${strCopsFin} ₽",
+                            )
+                            if (product.product.priceOld !=-1) {
+                                Spacer(modifier = Modifier.width(8.dp))
+                                val rublesOld = product.product.priceOld / 100
+                                val copsOld = product.product.priceOld % 100
+                                val copsStrOld = if(copsOld > 9) ",$copsOld" else ",0$copsOld"
+                                val strCopsFinOld = if(copsStrOld == ",00") "" else copsStrOld
+                                Text(
+                                    text = "${rublesOld}${strCopsFinOld} ₽",
+                                    style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough)
+                                )
+                            }
+                        }
                     }
                 }
+                else {
+                    Box(modifier = Modifier.fillMaxWidth()){
+                        Box(modifier = Modifier
+                            .shadow(4.dp)
+                            .size(40.dp)
+                            .align(Alignment.CenterStart)
+                            .background(
+                                MaterialTheme.colorScheme.background,
+                                MaterialTheme.shapes.small
+                            )
+                            .clickable {
+                                onRemove()
+                            }
+                        ) {
+                            Icon(modifier = Modifier.align(Alignment.Center),
+                                painter = painterResource(id = R.drawable.remove),
+                                contentDescription = "remove",
+                            )
+                        }
+                        Text(modifier = Modifier
+                            .align(Alignment.Center),
+                            text = product.count.toString()
+                        )
+                        Box(modifier = Modifier
+                            .shadow(4.dp)
+                            .size(40.dp)
+                            .align(Alignment.CenterEnd)
+                            .background(
+                                MaterialTheme.colorScheme.background,
+                                MaterialTheme.shapes.small
+                            )
+                            .clickable {
+                                onAdd()
+                            }
+                        ) {
+                            Icon(modifier = Modifier.align(Alignment.Center),
+                                painter = painterResource(id = R.drawable.add),
+                                contentDescription = "remove",
+                            )
+                        }
+                    }
+
+                }
+
 
             }
-
-
         }
     }
 
