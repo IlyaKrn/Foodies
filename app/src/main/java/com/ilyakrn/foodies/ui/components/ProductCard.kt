@@ -86,13 +86,21 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                         modifier = Modifier
                             .align(Alignment.Center)
                     ) {
+                       val rubles = product.product.priceCurrent / 100
+                       val cops = product.product.priceCurrent % 100
+                       val copsStr = if(cops > 9) ",$cops" else ",0$cops"
+                       val strCopsFin = if(copsStr == ",00") "" else copsStr
                         Text(
-                            text = "${product.product.priceCurrent} ₽"
+                            text = "${rubles}${strCopsFin} ₽",
                         )
-                        if (product.product.priceOld != 0) {
+                        if (product.product.priceOld !=-1) {
                             Spacer(modifier = Modifier.width(8.dp))
+                            val rublesOld = product.product.priceOld / 100
+                            val copsOld = product.product.priceOld % 100
+                            val copsStrOld = if(copsOld > 9) ",$copsOld" else ",0$copsOld"
+                            val strCopsFinOld = if(copsStrOld == ",00") "" else copsStrOld
                             Text(
-                                text = "${product.product.priceOld} ₽",
+                                text = "${rublesOld}${strCopsFinOld} ₽",
                                 style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough)
                             )
                         }

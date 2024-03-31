@@ -21,7 +21,7 @@ class SplashActivity : ComponentActivity() {
         setContent {
             SplashScreen()
             Thread{
-                Thread.sleep(5000)
+                Thread.sleep(3000)
                 val intent = Intent(this@SplashActivity, CatalogActivity::class.java)
                 startActivity(intent)
                 finish()

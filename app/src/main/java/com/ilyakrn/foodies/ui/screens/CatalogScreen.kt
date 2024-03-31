@@ -1,7 +1,7 @@
 package com.ilyakrn.foodies.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,118 +25,62 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilyakrn.foodies.R
+import com.ilyakrn.foodies.data.repos.BasketRepositoryImpl
+import com.ilyakrn.foodies.data.repos.CategoryRepositoryImpl
+import com.ilyakrn.foodies.data.repos.ProductRepositoryImpl
+import com.ilyakrn.foodies.data.repos.TagRepositoryImpl
 import com.ilyakrn.foodies.domain.models.core.Category
-import com.ilyakrn.foodies.domain.models.core.Product
-import com.ilyakrn.foodies.domain.models.core.SelectedProduct
-import com.ilyakrn.foodies.domain.models.core.Tag
-import com.ilyakrn.foodies.domain.repositories.BasketRepository
-import com.ilyakrn.foodies.domain.repositories.CategoryRepository
-import com.ilyakrn.foodies.domain.repositories.ProductRepository
-import com.ilyakrn.foodies.domain.repositories.TagRepository
+import com.ilyakrn.foodies.domain.models.extended.SelectedProductExtended
+import com.ilyakrn.foodies.domain.usecases.AddProductToBasketUseCase
 import com.ilyakrn.foodies.domain.usecases.GetBasketPriceUseCase
 import com.ilyakrn.foodies.domain.usecases.GetCategoryListUseCase
 import com.ilyakrn.foodies.domain.usecases.GetProductListByCategoryUseCase
+import com.ilyakrn.foodies.domain.usecases.RemoveProductFromBasketUseCase
+import com.ilyakrn.foodies.ui.components.BottomButton
+import com.ilyakrn.foodies.ui.components.CategoryCard
 import com.ilyakrn.foodies.ui.components.ProductCard
-import java.util.Collections
 
 @Preview
 @Composable
-fun CatalogScreen() {
+fun CatalogScreen(onShowBasket: () -> Unit = {}) {
+
+    val categoryRepository = CategoryRepositoryImpl()
+    val productRepository = ProductRepositoryImpl()
+    val tagRepository = TagRepositoryImpl()
+    val basketRepository = BasketRepositoryImpl()
 
 
-    val productRepository = object : ProductRepository{
-        override fun getProductList(): List<Product> {
-            val res = ArrayList<Product>()
-            res.add(Product(0, 0, "Name", "Description", "Image", 10000, 0, 250, "g", 10.1, 10.1, 10.1, 10.1, Collections.emptyList()))
-            res.add(Product(1, 0, "Name", "Description", "Image", 10000, 0, 250, "g", 10.1, 10.1, 10.1, 10.1, Collections.emptyList()))
-            res.add(Product(2, 0, "Name", "Description", "Image", 10000, 0, 250, "g", 10.1, 10.1, 10.1, 10.1, Collections.emptyList()))
-            res.add(Product(3, 0, "Name", "Description", "Image", 10000, 0, 250, "g", 10.1, 10.1, 10.1, 10.1, Collections.emptyList()))
-            res.add(Product(4, 0, "Name", "Description", "Image", 10000, 0, 250, "g", 10.1, 10.1, 10.1, 10.1, Collections.emptyList()))
-            res.add(Product(5, 0, "Name", "Description", "Image", 10000, 0, 250, "g", 10.1, 10.1, 10.1, 10.1, Collections.emptyList()))
-            res.add(Product(6, 0, "Name", "Description", "Image", 10000, 0, 250, "g", 10.1, 10.1, 10.1, 10.1, Collections.emptyList()))
-            res.add(Product(7, 0, "Name", "Description", "Image", 10000, 0, 250, "g", 10.1, 10.1, 10.1, 10.1, Collections.emptyList()))
-            res.add(Product(8, 0, "Name", "Description", "Image", 10000, 0, 250, "g", 10.1, 10.1, 10.1, 10.1, Collections.emptyList()))
-            res.add(Product(9, 0, "Name", "Description", "Image", 10000, 0, 250, "g", 10.1, 10.1, 10.1, 10.1, Collections.emptyList()))
+    val categoryList = remember {
+        mutableStateOf(ArrayList<Category>())
+    }
+    val selectedCategory = remember {
+        mutableStateOf(-1L)
+    }
+    val productList = remember {
+        mutableStateOf(ArrayList<SelectedProductExtended>())
+    }
+    val mutableBasketPrice = remember {
+        mutableStateOf(0)
+    }
+    val mutableIsLoading = remember {
+        mutableStateOf(true)
+    }
 
-            return res
+    if(selectedCategory.value == -1L) {
+        GetCategoryListUseCase(categoryRepository).invoke {
+            categoryList.value = it as ArrayList<Category>
+            selectedCategory.value = if (it.isNotEmpty()) it[0].id else -1L
+            GetProductListByCategoryUseCase(basketRepository, productRepository, tagRepository, it[0].id).invoke {
+                productList.value = it as ArrayList<SelectedProductExtended>
+                mutableIsLoading.value = false
+            }
         }
     }
 
-    val tagRepository = object : TagRepository {
-        override fun getTagList(): List<Tag> {
-            val res = ArrayList<Tag>()
-            res.add(Tag(0, "Tag 0"))
-            res.add(Tag(1, "Tag 1"))
-            res.add(Tag(2, "Tag 2"))
-            res.add(Tag(3, "Tag 3"))
-            res.add(Tag(4, "Tag 4"))
-            res.add(Tag(5, "Tag 5"))
-
-            return res
-        }
-    }
-
-    val categoryRepository = object : CategoryRepository{
-        override fun getCategoryList(): List<Category> {
-            val res = ArrayList<Category>()
-            res.add(Category(0, "Name 0"))
-            res.add(Category(1, "Name 1"))
-            res.add(Category(2, "Name 2"))
-            res.add(Category(3, "Name 3"))
-            res.add(Category(4, "Name 4"))
-            res.add(Category(5, "Name 5"))
-
-            return res
-        }
-
-    }
-
-    val basketRepository = object : BasketRepository{
-
-        override fun getSelectedProductList(): List<SelectedProduct> {
-            val res = ArrayList<SelectedProduct>()
-            res.add(SelectedProduct(0, 2))
-            res.add(SelectedProduct(1, 2))
-            res.add(SelectedProduct(2, 2))
-            res.add(SelectedProduct(3, 2))
-            res.add(SelectedProduct(4, 2))
-            res.add(SelectedProduct(5, 2))
-            return res
-        }
-
-        override fun addSelectedProduct(product: SelectedProduct) {
-           // TODO("Not yet implemented")
-        }
-
-        override fun removeSelectedProduct(id: Long) {
-          //  TODO("Not yet implemented")
-        }
-
-        override fun editSelectedProduct(product: SelectedProduct) {
-           // TODO("Not yet implemented")
-        }
-
-    }
-
-
-    val getCategoryListUseCase = GetCategoryListUseCase(categoryRepository)
-
-    val categories = getCategoryListUseCase.invoke()
-
-    val mutableSelectedCategory = remember {
-        mutableStateOf(if(categories.size != 0) categories.get(0).id else -1)
-    }
-
-    val getBasketPriceUseCase = GetBasketPriceUseCase(basketRepository, productRepository)
-    val mutablePrice = remember {
-        mutableStateOf(getBasketPriceUseCase.invoke())
-    }
     Column(modifier = Modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
@@ -171,85 +116,83 @@ fun CatalogScreen() {
                 .fillMaxWidth()
                 .height(40.dp)
             ){
-                items(items = getCategoryListUseCase.invoke(), itemContent = { item ->
-                    if(mutableSelectedCategory.value == item.id) {
-                        Box(
-                            modifier = Modifier
-                                .background(
-                                    MaterialTheme.colorScheme.primary,
-                                    MaterialTheme.shapes.small
-                                )
-                                .height(60.dp)
-                                .padding(16.dp, 0.dp)
-                                .clickable {
-                                    mutableSelectedCategory.value = item.id
-                                }
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .align(Alignment.Center),
-                                text = item.name,
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
-                        }
-                    } else{
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Box(
-                            modifier = Modifier
-                                .height(60.dp)
-                                .clickable {
-                                    mutableSelectedCategory.value = item.id
-                                }
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .align(Alignment.Center),
-                                text = item.name,
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.secondary
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(16.dp))
-                    }
+                items(items = categoryList.value, itemContent = { item ->
+                    CategoryCard(
+                        category = item,
+                        isSelected = selectedCategory.value == item.id,
+                        onClick = {
+                            productList.value.clear()
+                            mutableIsLoading.value = true
+                            GetProductListByCategoryUseCase(basketRepository, productRepository, tagRepository, item.id).invoke {
+                                productList.value = it as ArrayList<SelectedProductExtended>
+                                mutableIsLoading.value = false
+                            }
+                            GetBasketPriceUseCase(basketRepository, productRepository).invoke{
+                                mutableBasketPrice.value = it
+                            }
+                            selectedCategory.value = item.id
+                        })
                 })
             }
         }
         Box(modifier = Modifier
-            .padding(16.dp)
+            .fillMaxSize()
         ){
-            val getProductListByCategoryUseCase = GetProductListByCategoryUseCase(productRepository, tagRepository, mutableSelectedCategory.value)
-            LazyVerticalGrid(columns = GridCells.Adaptive(170.dp)){
-                items(getProductListByCategoryUseCase.invoke()){
-                    ProductCard(it)
+
+            if(productList.value.isEmpty()) {
+                if(mutableIsLoading.value){
+                    CircularProgressIndicator(modifier = Modifier
+                        .align(Alignment.Center)
+                    )
+                }
+                else{
+                    Text(modifier = Modifier
+                        .align(Alignment.Center),
+                        text = "No products"
+                    )
                 }
             }
-            if(mutablePrice.value != 0){
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .align(Alignment.BottomCenter)
-                    .background(MaterialTheme.colorScheme.background)
-                    .clickable {
-
-                    }
-                ) {
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp)
-                        .align(Alignment.BottomCenter)
-                        .background(MaterialTheme.colorScheme.primary, MaterialTheme.shapes.small)
-                        .clickable {
-
-                        }
-                    ) {
-                        Text(modifier = Modifier
-                            .align(Alignment.Center),
-                            text = mutablePrice.value.toString() + " ₽",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onPrimary
+            else{
+                LazyVerticalGrid(modifier = Modifier
+                    .padding(16.dp, 16.dp, 16.dp, 0.dp),
+                    columns = GridCells.Adaptive(170.dp)
+                ){
+                    items(productList.value){
+                        ProductCard(
+                            product = it,
+                            onAdd = {
+                                AddProductToBasketUseCase(basketRepository, it.product.id).invoke()
+                                GetProductListByCategoryUseCase(basketRepository, productRepository, tagRepository, it.product.categoryId).invoke {
+                                    productList.value = it as ArrayList<SelectedProductExtended>
+                                    mutableIsLoading.value = false
+                                }
+                                GetBasketPriceUseCase(basketRepository, productRepository).invoke{
+                                    mutableBasketPrice.value = it
+                                }
+                            },
+                            onRemove = {
+                                RemoveProductFromBasketUseCase(basketRepository, it.product.id).invoke()
+                                GetProductListByCategoryUseCase(basketRepository, productRepository, tagRepository, it.product.categoryId).invoke {
+                                    productList.value = it as ArrayList<SelectedProductExtended>
+                                    mutableIsLoading.value = false
+                                }
+                                GetBasketPriceUseCase(basketRepository, productRepository).invoke{
+                                    mutableBasketPrice.value = it
+                                }
+                            }
                         )
                     }
+                }
+            }
+            if(mutableBasketPrice.value != 0){
+                val rubles = mutableBasketPrice.value / 100
+                val cops = mutableBasketPrice.value % 100
+                val copsStr = if(cops > 9) ",$cops" else ",0$cops"
+                val strCopsFin = if(copsStr == ",00") "" else copsStr
+                Box(modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                ) {
+                    BottomButton(text = "${rubles}${strCopsFin} ₽")
                 }
             }
         }
