@@ -47,7 +47,7 @@ import com.ilyakrn.foodies.ui.components.ProductCard
 
 @Preview
 @Composable
-fun CatalogScreen(onShowBasket: () -> Unit = {}) {
+fun CatalogScreen(onShowBasket: () -> Unit = {},onShowProductInfo: (Long) -> Unit = {} ) {
 
     val categoryRepository = CategoryRepositoryImpl()
     val productRepository = ProductRepositoryImpl()
@@ -180,6 +180,9 @@ fun CatalogScreen(onShowBasket: () -> Unit = {}) {
                                 GetBasketPriceUseCase(basketRepository, productRepository).invoke{
                                     mutableBasketPrice.value = it
                                 }
+                            },
+                            onClick = {
+                                onShowProductInfo(it.product.id)
                             }
                         )
                     }
@@ -193,7 +196,7 @@ fun CatalogScreen(onShowBasket: () -> Unit = {}) {
                 Box(modifier = Modifier
                     .align(Alignment.BottomCenter)
                 ) {
-                    BottomButton(text = "${rubles}${strCopsFin} ₽")
+                    BottomButton(text = "${rubles}${strCopsFin} ₽", onClick = onShowBasket)
                 }
             }
         }

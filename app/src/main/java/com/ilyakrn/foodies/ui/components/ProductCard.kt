@@ -44,7 +44,7 @@ import com.ilyakrn.foodies.domain.usecases.GetSelectedProductBasketCountUseCase
 import java.util.Collections
 
 @Composable
-fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemove: () -> Unit = {}) {
+fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemove: () -> Unit = {}, onClick: () -> Unit = {}) {
 
     Box(modifier = Modifier
         .padding(4.dp)
@@ -53,6 +53,7 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
         Column(modifier = Modifier
             .width(170.dp)
             .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.small)
+            .clickable { onClick() }
         ){
             Image(modifier = Modifier
                 .height(170.dp)

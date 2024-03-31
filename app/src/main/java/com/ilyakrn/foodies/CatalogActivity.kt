@@ -1,5 +1,6 @@
 package com.ilyakrn.foodies
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,7 +22,17 @@ class CatalogActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CatalogScreen()
+                    CatalogScreen(
+                        onShowBasket = {
+                            val intent = Intent(this@CatalogActivity, BasketActivity::class.java)
+                            startActivity(intent)
+                        },
+                        onShowProductInfo = {
+                            val intent = Intent(this@CatalogActivity, ProductInfoActivity::class.java)
+                            intent.putExtra("id", it)
+                            startActivity(intent)
+                        }
+                    )
                 }
             }
         }

@@ -14,7 +14,7 @@ import com.ilyakrn.foodies.ui.screens.CatalogScreen
 import com.ilyakrn.foodies.ui.screens.SplashScreen
 import com.ilyakrn.foodies.ui.theme.FoodiesTheme
 
-class SplashActivity : ComponentActivity() {
+class BasketActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,12 +25,6 @@ class SplashActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     SplashScreen()
-                    Thread{
-                        Thread.sleep(2000)
-                        val intent = Intent(this@SplashActivity, CatalogActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }.start()
                 }
             }
         }

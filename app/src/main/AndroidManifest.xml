@@ -28,6 +28,14 @@
             android:name=".CatalogActivity"
             android:theme="@style/Theme.Foodies">
         </activity>
+        <activity
+            android:name=".BasketActivity"
+            android:theme="@style/Theme.Foodies">
+        </activity>
+        <activity
+            android:name=".ProductInfoActivity"
+            android:theme="@style/Theme.Foodies">
+        </activity>
     </application>
 
 </manifest>

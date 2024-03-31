@@ -32,7 +32,7 @@ fun BottomButton(onClick: () -> Unit = {}, text: String) {
             .align(Alignment.Center)
             .background(MaterialTheme.colorScheme.primary, MaterialTheme.shapes.small)
             .clickable {
-
+                onClick()
             }
         ) {
             Text(modifier = Modifier

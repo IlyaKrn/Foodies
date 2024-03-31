@@ -10,11 +10,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import com.ilyakrn.foodies.domain.models.core.Product
 import com.ilyakrn.foodies.ui.screens.CatalogScreen
+import com.ilyakrn.foodies.ui.screens.ProductInfoScreen
 import com.ilyakrn.foodies.ui.screens.SplashScreen
 import com.ilyakrn.foodies.ui.theme.FoodiesTheme
 
-class SplashActivity : ComponentActivity() {
+class ProductInfoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,13 +26,7 @@ class SplashActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SplashScreen()
-                    Thread{
-                        Thread.sleep(2000)
-                        val intent = Intent(this@SplashActivity, CatalogActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }.start()
+                    ProductInfoScreen(intent.getLongExtra("id", -1L))
                 }
             }
         }
