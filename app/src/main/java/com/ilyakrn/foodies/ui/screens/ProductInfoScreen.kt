@@ -44,6 +44,7 @@ import com.ilyakrn.foodies.domain.usecases.RemoveProductFromBasketUseCase
 import com.ilyakrn.foodies.ui.components.BottomButton
 import com.ilyakrn.foodies.ui.components.ProductCountChangerInfo
 import com.ilyakrn.foodies.ui.components.ProductInfoParam
+import com.ilyakrn.foodies.ui.components.ProductProperties
 import com.ilyakrn.foodies.ui.getPriceFromInt
 
 @Preview
@@ -175,13 +176,13 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
                 }
             }
         }
-        Box(modifier = Modifier
-            .size(76.dp)
+        Column(modifier = Modifier
+            .width(76.dp)
+            .padding(16.dp)
         ){
             Box(modifier = Modifier
                 .size(40.dp)
                 .shadow(8.dp)
-                .align(Alignment.Center)
                 .background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.extraLarge)
                 .clickable {
                     onClose()
@@ -194,6 +195,15 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
                     contentDescription = "remove"
                 )
             }
+            var spicy = false
+            var vegetarian = false
+            product.value!!.product.tags.forEach {
+                if (it.id == 2L)
+                    vegetarian = true
+                if (it.id == 4L)
+                    spicy = true
+            }
+            ProductProperties(discount = product.value!!.product.priceOld != -1, spicy = spicy, vegetarian = vegetarian)
         }
     }
 
