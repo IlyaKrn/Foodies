@@ -36,7 +36,8 @@ fun CategoryCard(category: Category, isSelected: Boolean = false, onClick: () ->
                     .height(60.dp)
                     .padding(16.dp, 0.dp)
                     .clickable {
-                        onClick()
+                        if(isSelected)
+                            onClick()
                     }
             ) {
                 Text(
@@ -58,7 +59,8 @@ fun CategoryCard(category: Category, isSelected: Boolean = false, onClick: () ->
                     .height(60.dp)
                     .padding(16.dp, 0.dp)
                     .clickable {
-                        onClick()
+                        if(!isSelected)
+                            onClick()
                     }
             ) {
                 Text(

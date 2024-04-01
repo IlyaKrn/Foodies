@@ -77,7 +77,8 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                                 .padding(8.dp)
                                 .align(Alignment.Center)
                                 .clickable {
-                                    onAdd()
+                                    if(product.count == 0)
+                                        onAdd()
                                 }
                             ) {
                                 Row(modifier = Modifier.align(Alignment.Center)) {
@@ -106,10 +107,12 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                     ) {
                         ProductCountChangerCard(
                             onAdd = {
-                                onAdd()
+                                if(product.count != 0)
+                                    onAdd()
                             },
                             onRemove = {
-                                onRemove()
+                                if(product.count != 0)
+                                    onRemove()
                             },
                             count = product.count
                         )

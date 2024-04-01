@@ -157,10 +157,17 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
                         BottomButton(
                             text = stringResource(R.string.add_to_basket) + " " + getPriceFromInt(product.value!!.product.priceCurrent),
                             onClick = {
-                                AddProductToBasketUseCase(basketRepository, id).invoke()
-                                GetProductByIdUseCase(basketRepository, productRepository, tagRepository, id).invoke {
-                                    product.value = it
-                                    mutableIsLoading.value = false
+                                if(product.value!!.count == 0) {
+                                    AddProductToBasketUseCase(basketRepository, id).invoke()
+                                    GetProductByIdUseCase(
+                                        basketRepository,
+                                        productRepository,
+                                        tagRepository,
+                                        id
+                                    ).invoke {
+                                        product.value = it
+                                        mutableIsLoading.value = false
+                                    }
                                 }
                             }
                         )
@@ -172,17 +179,26 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
                     ) {
                         ProductCountChangerInfo(
                             onAdd = {
-                                AddProductToBasketUseCase(basketRepository, id).invoke()
-                                GetProductByIdUseCase(basketRepository, productRepository, tagRepository, id).invoke {
-                                    product.value = it
-                                    mutableIsLoading.value = false
-                                } },
+                                if(product.value!!.count != 0) {
+                                    AddProductToBasketUseCase(basketRepository, id).invoke()
+                                    GetProductByIdUseCase(
+                                        basketRepository,
+                                        productRepository,
+                                        tagRepository,
+                                        id
+                                    ).invoke {
+                                        product.value = it
+                                        mutableIsLoading.value = false
+                                    }
+                                }},
                             onRemove = {
-                                RemoveProductFromBasketUseCase(basketRepository, id).invoke()
-                                GetProductByIdUseCase(basketRepository, productRepository, tagRepository, id).invoke {
-                                    product.value = it
-                                    mutableIsLoading.value = false
-                                } },
+                                if(product.value!!.count != 0) {
+                                    RemoveProductFromBasketUseCase(basketRepository, id).invoke()
+                                    GetProductByIdUseCase(basketRepository, productRepository, tagRepository, id).invoke {
+                                        product.value = it
+                                        mutableIsLoading.value = false
+                                    }
+                                }},
                             count = product.value!!.count
                         )
                     }
