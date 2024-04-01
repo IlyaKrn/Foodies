@@ -51,9 +51,7 @@ import com.ilyakrn.foodies.ui.getPriceFromInt
 fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
 
     val product = remember {
-        mutableStateOf<SelectedProductExtended?>(SelectedProductExtended(ProductExtended(1, 1, "JHhhlkhl", "hsd fhd dgjdjd jdjdghjdgjhgghjdgh dgj dgj djd djghjfgjd d hfgdhgdh fghdffgd", "1", 1, 1, 1, "г", 1.1, 1.1, 1.1, 1.1, listOf(
-            Tag(0, "fdgsdfg")
-        )), 1))
+        mutableStateOf<SelectedProductExtended?>(null)
     }
     val mutableIsLoading = remember {
         mutableStateOf(true)
