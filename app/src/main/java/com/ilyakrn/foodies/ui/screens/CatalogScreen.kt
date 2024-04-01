@@ -44,8 +44,11 @@ import com.ilyakrn.foodies.domain.usecases.GetCategoryListUseCase
 import com.ilyakrn.foodies.domain.usecases.GetProductListByCategoryUseCase
 import com.ilyakrn.foodies.domain.usecases.RemoveProductFromBasketUseCase
 import com.ilyakrn.foodies.ui.components.BottomButton
+import com.ilyakrn.foodies.ui.components.CategoryBar
 import com.ilyakrn.foodies.ui.components.CategoryCard
+import com.ilyakrn.foodies.ui.components.MainTopBar
 import com.ilyakrn.foodies.ui.components.ProductCard
+import com.ilyakrn.foodies.ui.getPriceFromInt
 
 @Preview
 @Composable
@@ -88,56 +91,23 @@ fun CatalogScreen(onShowBasket: () -> Unit = {},onShowProductInfo: (Long) -> Uni
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
     ){
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            ){
-            Icon(modifier = Modifier
-                .padding(18.dp)
-                .align(Alignment.CenterStart),
-                painter = painterResource(id = R.drawable.settings),
-                tint = MaterialTheme.colorScheme.secondary,
-                contentDescription = "settings"
-            )
-            Icon(modifier = Modifier
-                .align(Alignment.Center),
-                painter = painterResource(id = R.drawable.logo_top_bar),
-                tint = MaterialTheme.colorScheme.primary,
-                contentDescription = "settings"
-            )
-            Icon(modifier = Modifier
-                .padding(18.dp)
-                .align(Alignment.CenterEnd),
-                painter = painterResource(id = R.drawable.search),
-                tint = MaterialTheme.colorScheme.secondary,
-                contentDescription = "settings"
-            )
-        }
-        Row{
-            Spacer(modifier = Modifier.width(16.dp))
-            LazyRow(modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
-            ){
-                items(items = categoryList.value, itemContent = { item ->
-                    CategoryCard(
-                        category = item,
-                        isSelected = selectedCategory.value == item.id,
-                        onClick = {
-                            productList.value.clear()
-                            mutableIsLoading.value = true
-                            GetProductListByCategoryUseCase(basketRepository, productRepository, tagRepository, item.id).invoke {
-                                productList.value = it as ArrayList<SelectedProductExtended>
-                                mutableIsLoading.value = false
-                            }
-                            GetBasketPriceUseCase(basketRepository, productRepository).invoke{
-                                mutableBasketPrice.value = it
-                            }
-                            selectedCategory.value = item.id
-                        })
-                })
+        MainTopBar()
+        CategoryBar(
+            categories = categoryList.value,
+            selectedId = selectedCategory.value,
+            onSelect = {
+                productList.value.clear()
+                mutableIsLoading.value = true
+                GetProductListByCategoryUseCase(basketRepository, productRepository, tagRepository, it).invoke {
+                    productList.value = it as ArrayList<SelectedProductExtended>
+                    mutableIsLoading.value = false
+                }
+                GetBasketPriceUseCase(basketRepository, productRepository).invoke{
+                    mutableBasketPrice.value = it
+                }
+                selectedCategory.value = it
             }
-        }
+        )
         Box(modifier = Modifier
             .fillMaxSize()
         ){
@@ -193,14 +163,10 @@ fun CatalogScreen(onShowBasket: () -> Unit = {},onShowProductInfo: (Long) -> Uni
                 }
             }
             if(mutableBasketPrice.value != 0){
-                val rubles = mutableBasketPrice.value / 100
-                val cops = mutableBasketPrice.value % 100
-                val copsStr = if(cops > 9) ",$cops" else ",0$cops"
-                val strCopsFin = if(copsStr == ",00") "" else copsStr
-                Box(modifier = Modifier
+               Box(modifier = Modifier
                     .align(Alignment.BottomCenter)
                 ) {
-                    BottomButton(text = "${rubles}${strCopsFin} ₽", onClick = onShowBasket, iconId = R.drawable.basket)
+                    BottomButton(text = getPriceFromInt(mutableBasketPrice.value), onClick = onShowBasket, iconId = R.drawable.basket)
                 }
             }
         }
