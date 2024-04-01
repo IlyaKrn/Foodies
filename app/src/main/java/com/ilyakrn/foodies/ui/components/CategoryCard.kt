@@ -1,5 +1,8 @@
 package com.ilyakrn.foodies.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,44 +21,54 @@ import com.ilyakrn.foodies.domain.models.core.Category
 
 @Composable
 fun CategoryCard(category: Category, isSelected: Boolean = false, onClick: () -> Unit = {}){
-    if(isSelected) {
-        Box(
-            modifier = Modifier
-                .background(
-                    MaterialTheme.colorScheme.primary,
-                    MaterialTheme.shapes.small
+    Box{
+        AnimatedVisibility(
+            visible = isSelected,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(
+                        MaterialTheme.colorScheme.primary,
+                        MaterialTheme.shapes.small
+                    )
+                    .height(60.dp)
+                    .padding(16.dp, 0.dp)
+                    .clickable {
+                        onClick()
+                    }
+            ) {
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    text = category.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
-                .height(60.dp)
-                .padding(16.dp, 0.dp)
-                .clickable {
-                    onClick()
-                }
-        ) {
-            Text(
-                modifier = Modifier
-                    .align(Alignment.Center),
-                text = category.name,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
+            }
         }
-    } else{
-        Box(
-            modifier = Modifier
-                .height(60.dp)
-                .padding(16.dp, 0.dp)
-                .clickable {
-                    onClick()
-                }
+        AnimatedVisibility(
+            visible = !isSelected,
+            enter = fadeIn(),
+            exit = fadeOut()
         ) {
-            Text(
+            Box(
                 modifier = Modifier
-                    .align(Alignment.Center),
-                text = category.name,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.secondary
-            )
+                    .height(60.dp)
+                    .padding(16.dp, 0.dp)
+                    .clickable {
+                        onClick()
+                    }
+            ) {
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    text = category.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
         }
     }
-
 }

@@ -1,5 +1,8 @@
 package com.ilyakrn.foodies.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -55,45 +58,62 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                     color = MaterialTheme.colorScheme.tertiary
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                if(product.count == 0) {
-                    Box(modifier = Modifier
-                        .shadow(4.dp)
-                        .fillMaxWidth()
-                        .background(
-                            MaterialTheme.colorScheme.background,
-                            MaterialTheme.shapes.small
-                        )
-                        .padding(8.dp)
-                        .clickable {
-                            onAdd()
-                        }
+
+                Box{
+                    this@Column.AnimatedVisibility(
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                        visible = product.count == 0,
+                        enter = fadeIn(),
+                        exit = fadeOut()
                     ) {
-                        Row(modifier = Modifier.align(Alignment.Center)) {
-                            Text(
-                                text = getPriceFromInt(product.product.priceCurrent),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                            if (product.product.priceOld !=-1) {
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text =  getPriceFromInt(product.product.priceOld),
-                                    style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough),
-                                    color = MaterialTheme.colorScheme.tertiary
+                        Box(modifier = Modifier.height(40.dp)){
+                            Box(modifier = Modifier
+                                .shadow(4.dp)
+                                .fillMaxWidth()
+                                .background(
+                                    MaterialTheme.colorScheme.background,
+                                    MaterialTheme.shapes.small
                                 )
+                                .padding(8.dp)
+                                .align(Alignment.Center)
+                                .clickable {
+                                    onAdd()
+                                }
+                            ) {
+                                Row(modifier = Modifier.align(Alignment.Center)) {
+                                    Text(
+                                        text = getPriceFromInt(product.product.priceCurrent),
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                    if (product.product.priceOld !=-1) {
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            text =  getPriceFromInt(product.product.priceOld),
+                                            style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough),
+                                            color = MaterialTheme.colorScheme.tertiary
+                                        )
+                                    }
+                                }
                             }
                         }
+
                     }
-                }
-                else {
-                   ProductCountChangerCard(
-                       onAdd = {
-                           onAdd()
-                       },
-                       onRemove = {
-                           onRemove()
-                       },
-                       count = product.count
-                   )
+                    this@Column.AnimatedVisibility(
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                        visible = product.count != 0,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        ProductCountChangerCard(
+                            onAdd = {
+                                onAdd()
+                            },
+                            onRemove = {
+                                onRemove()
+                            },
+                            count = product.count
+                        )
+                    }
                 }
             }
         }

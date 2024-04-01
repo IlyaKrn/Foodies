@@ -1,6 +1,12 @@
 package com.ilyakrn.foodies.ui.screens
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -142,26 +148,12 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
                 }
 
                 Box(modifier = Modifier.align(Alignment.BottomCenter)){
-                    if(product.value!!.count != 0){
-                       ProductCountChangerInfo(
-                           onAdd = {
-                               AddProductToBasketUseCase(basketRepository, id).invoke()
-                               GetProductByIdUseCase(basketRepository, productRepository, tagRepository, id).invoke {
-                                   product.value = it
-                                   mutableIsLoading.value = false
-                               }
-                           },
-                           onRemove = {
-                               RemoveProductFromBasketUseCase(basketRepository, id).invoke()
-                               GetProductByIdUseCase(basketRepository, productRepository, tagRepository, id).invoke {
-                                   product.value = it
-                                   mutableIsLoading.value = false
-                               }
-                           },
-                           count = product.value!!.count
-                       )
 
-                    } else{
+                    AnimatedVisibility(modifier = Modifier.align(Alignment.BottomCenter),
+                        visible = product.value!!.count == 0,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
                         BottomButton(
                             text = stringResource(R.string.add_to_basket) + " " + getPriceFromInt(product.value!!.product.priceCurrent),
                             onClick = {
@@ -171,6 +163,27 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
                                     mutableIsLoading.value = false
                                 }
                             }
+                        )
+                    }
+                    AnimatedVisibility(modifier = Modifier.align(Alignment.BottomCenter),
+                        visible = product.value!!.count != 0,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        ProductCountChangerInfo(
+                            onAdd = {
+                                AddProductToBasketUseCase(basketRepository, id).invoke()
+                                GetProductByIdUseCase(basketRepository, productRepository, tagRepository, id).invoke {
+                                    product.value = it
+                                    mutableIsLoading.value = false
+                                } },
+                            onRemove = {
+                                RemoveProductFromBasketUseCase(basketRepository, id).invoke()
+                                GetProductByIdUseCase(basketRepository, productRepository, tagRepository, id).invoke {
+                                    product.value = it
+                                    mutableIsLoading.value = false
+                                } },
+                            count = product.value!!.count
                         )
                     }
                 }
