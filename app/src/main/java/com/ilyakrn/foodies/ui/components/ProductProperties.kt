@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,6 +31,7 @@ fun ProductProperties(discount: Boolean = true, spicy: Boolean = true, vegetaria
         if(discount) {
             Spacer(modifier = Modifier.height(12.dp))
             Icon(
+                modifier = Modifier.size(44.dp),
                 painter = painterResource(id = R.drawable.discount),
                 contentDescription = "discount",
                 tint = Color.Unspecified
@@ -38,6 +40,7 @@ fun ProductProperties(discount: Boolean = true, spicy: Boolean = true, vegetaria
         if(spicy) {
             Spacer(modifier = Modifier.height(12.dp))
             Icon(
+                modifier = Modifier.size(44.dp),
                 painter = painterResource(id = R.drawable.spicy),
                 contentDescription = "spicy",
                 tint = Color.Unspecified
@@ -46,6 +49,7 @@ fun ProductProperties(discount: Boolean = true, spicy: Boolean = true, vegetaria
         if(vegetarian) {
             Spacer(modifier = Modifier.height(12.dp))
             Icon(
+                modifier = Modifier.size(44.dp),
                 painter = painterResource(id = R.drawable.vegetarian),
                 contentDescription = "vegetarian",
                 tint = Color.Unspecified
