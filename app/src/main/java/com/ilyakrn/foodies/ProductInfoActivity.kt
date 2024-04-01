@@ -26,7 +26,12 @@ class ProductInfoActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ProductInfoScreen(intent.getLongExtra("id", -1L))
+                    ProductInfoScreen(
+                        id = intent.getLongExtra("id", -1L),
+                        onClose = {
+                            finish()
+                        }
+                    )
                 }
             }
         }

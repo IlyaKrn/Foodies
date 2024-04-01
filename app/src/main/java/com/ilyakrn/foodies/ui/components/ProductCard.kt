@@ -47,7 +47,7 @@ import java.util.Collections
 fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemove: () -> Unit = {}, onClick: () -> Unit = {}) {
 
     Box(modifier = Modifier
-        .padding(4.dp)
+        .padding(4.dp, 8.dp)
     ){
 
         Column(modifier = Modifier
@@ -56,8 +56,7 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
             .clickable { onClick() }
         ){
             Image(modifier = Modifier
-                .height(170.dp)
-                .width(170.dp),
+                .fillMaxWidth(),
                 painter = painterResource(id = R.drawable.img),
                 contentDescription = "image"
             )
@@ -72,6 +71,7 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                 Text(
                     text = "${product.product.measure} ${product.product.measureUnit}",
                     style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.tertiary
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 if(product.count == 0) {
@@ -106,7 +106,8 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                                 val strCopsFinOld = if(copsStrOld == ",00") "" else copsStrOld
                                 Text(
                                     text = "${rublesOld}${strCopsFinOld} ₽",
-                                    style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough)
+                                    style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough),
+                                    color = MaterialTheme.colorScheme.tertiary
                                 )
                             }
                         }
@@ -149,7 +150,7 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                         ) {
                             Icon(modifier = Modifier.align(Alignment.Center),
                                 painter = painterResource(id = R.drawable.add),
-                                contentDescription = "remove",
+                                contentDescription = "remove"
                             )
                         }
                     }

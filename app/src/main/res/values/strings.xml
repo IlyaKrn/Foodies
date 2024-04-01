@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">Foodies</string>
     <string name="no_products_in_category">Здесь пока что ничего нет:(</string>
+    <string name="weigt">Вес</string>
+    <string name="volume">Объем</string>
+    <string name="energy">Энергетическая ценность</string>
+    <string name="proteines">Белки</string>
+    <string name="fats">Жиры</string>
+    <string name="carbohydrates">Углеводы</string>
+    <string name="energy_unit">ккал</string>
+    <string name="proteines_unit">г</string>
+    <string name="fats_unit">г</string>
+    <string name="carbohydrates_unit">г</string>
+    <string name="add_to_basket">Добавить в корзину за</string>
+    <string name="no_product_data">Нет данных для этого продукта:(</string>
 </resources>

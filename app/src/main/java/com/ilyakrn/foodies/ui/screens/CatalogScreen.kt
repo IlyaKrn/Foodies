@@ -1,6 +1,5 @@
 package com.ilyakrn.foodies.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +15,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -154,37 +156,39 @@ fun CatalogScreen(onShowBasket: () -> Unit = {},onShowProductInfo: (Long) -> Uni
                 }
             }
             else{
-                LazyVerticalGrid(modifier = Modifier
-                    .padding(12.dp, 12.dp, 12.dp, 0.dp),
-                    columns = GridCells.Adaptive(170.dp)
-                ){
-                    items(productList.value){
-                        ProductCard(
-                            product = it,
-                            onAdd = {
-                                AddProductToBasketUseCase(basketRepository, it.product.id).invoke()
-                                GetProductListByCategoryUseCase(basketRepository, productRepository, tagRepository, it.product.categoryId).invoke {
-                                    productList.value = it as ArrayList<SelectedProductExtended>
-                                    mutableIsLoading.value = false
+                Column {
+                    LazyVerticalGrid(modifier = Modifier
+                        .padding(12.dp, 12.dp, 12.dp, if(mutableBasketPrice.value != 0) 72.dp else 0.dp),
+                        columns = GridCells.Adaptive(((LocalConfiguration.current.screenWidthDp / 2) - 24).dp)
+                    ){
+                        items(productList.value){
+                            ProductCard(
+                                product = it,
+                                onAdd = {
+                                    AddProductToBasketUseCase(basketRepository, it.product.id).invoke()
+                                    GetProductListByCategoryUseCase(basketRepository, productRepository, tagRepository, it.product.categoryId).invoke {
+                                        productList.value = it as ArrayList<SelectedProductExtended>
+                                        mutableIsLoading.value = false
+                                    }
+                                    GetBasketPriceUseCase(basketRepository, productRepository).invoke{
+                                        mutableBasketPrice.value = it
+                                    }
+                                },
+                                onRemove = {
+                                    RemoveProductFromBasketUseCase(basketRepository, it.product.id).invoke()
+                                    GetProductListByCategoryUseCase(basketRepository, productRepository, tagRepository, it.product.categoryId).invoke {
+                                        productList.value = it as ArrayList<SelectedProductExtended>
+                                        mutableIsLoading.value = false
+                                    }
+                                    GetBasketPriceUseCase(basketRepository, productRepository).invoke{
+                                        mutableBasketPrice.value = it
+                                    }
+                                },
+                                onClick = {
+                                    onShowProductInfo(it.product.id)
                                 }
-                                GetBasketPriceUseCase(basketRepository, productRepository).invoke{
-                                    mutableBasketPrice.value = it
-                                }
-                            },
-                            onRemove = {
-                                RemoveProductFromBasketUseCase(basketRepository, it.product.id).invoke()
-                                GetProductListByCategoryUseCase(basketRepository, productRepository, tagRepository, it.product.categoryId).invoke {
-                                    productList.value = it as ArrayList<SelectedProductExtended>
-                                    mutableIsLoading.value = false
-                                }
-                                GetBasketPriceUseCase(basketRepository, productRepository).invoke{
-                                    mutableBasketPrice.value = it
-                                }
-                            },
-                            onClick = {
-                                onShowProductInfo(it.product.id)
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }
@@ -196,7 +200,7 @@ fun CatalogScreen(onShowBasket: () -> Unit = {},onShowProductInfo: (Long) -> Uni
                 Box(modifier = Modifier
                     .align(Alignment.BottomCenter)
                 ) {
-                    BottomButton(text = "${rubles}${strCopsFin} ₽", onClick = onShowBasket)
+                    BottomButton(text = "${rubles}${strCopsFin} ₽", onClick = onShowBasket, iconId = R.drawable.basket)
                 }
             }
         }
