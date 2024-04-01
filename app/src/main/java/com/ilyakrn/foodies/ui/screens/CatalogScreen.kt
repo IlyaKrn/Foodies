@@ -164,10 +164,10 @@ fun CatalogScreen(onShowBasket: () -> Unit = {},onShowProductInfo: (Long) -> Uni
             }
             if(mutableBasketPrice.value != 0){
                Box(modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                ) {
-                    BottomButton(text = getPriceFromInt(mutableBasketPrice.value), onClick = onShowBasket, iconId = R.drawable.basket)
-                }
+                   .align(Alignment.BottomCenter)
+               ) {
+                   BottomButton(text = getPriceFromInt(mutableBasketPrice.value), onClick = onShowBasket, iconId = R.drawable.basket)
+               }
             }
         }
     }

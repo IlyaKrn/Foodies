@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import com.ilyakrn.foodies.ui.screens.BasketScreen
 import com.ilyakrn.foodies.ui.screens.CatalogScreen
 import com.ilyakrn.foodies.ui.screens.SplashScreen
 import com.ilyakrn.foodies.ui.theme.FoodiesTheme
@@ -24,7 +25,16 @@ class BasketActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SplashScreen()
+                    BasketScreen(
+                        onClose = {
+                            finish()
+                        },
+                        onShowProductInfo = {
+                            val intent = Intent(this@BasketActivity, ProductInfoActivity::class.java)
+                            intent.putExtra("id", it)
+                            startActivity(intent)
+                        }
+                    )
                 }
             }
         }

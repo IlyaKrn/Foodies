@@ -46,7 +46,7 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
             ){
                 Text(
                     text = product.product.name,
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelLarge
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -69,7 +69,10 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                         }
                     ) {
                         Row(modifier = Modifier.align(Alignment.Center)) {
-                            Text(text = getPriceFromInt(product.product.priceCurrent))
+                            Text(
+                                text = getPriceFromInt(product.product.priceCurrent),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                             if (product.product.priceOld !=-1) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(

@@ -13,4 +13,7 @@
     <string name="carbohydrates_unit">г</string>
     <string name="add_to_basket">Добавить в корзину за</string>
     <string name="no_product_data">Нет данных для этого продукта:(</string>
+    <string name="basket">Корзина</string>
+    <string name="no_products_in_basket">Пусто, выберите блюда в каталоге:)</string>
+    <string name="order_for">Заказать за</string>
 </resources>
