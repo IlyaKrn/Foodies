@@ -68,7 +68,8 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                     ) {
                         Box(modifier = Modifier.height(40.dp)){
                             Box(modifier = Modifier
-                                .shadow(4.dp)
+                                .shadow(4.dp,
+                                    MaterialTheme.shapes.small)
                                 .fillMaxWidth()
                                 .background(
                                     MaterialTheme.colorScheme.background,

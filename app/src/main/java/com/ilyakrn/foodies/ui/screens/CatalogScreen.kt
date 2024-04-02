@@ -86,6 +86,9 @@ fun CatalogScreen(onShowBasket: () -> Unit = {},onShowProductInfo: (Long) -> Uni
             }
         }
     }
+    GetBasketPriceUseCase(basketRepository, productRepository).invoke{
+        mutableBasketPrice.value = it
+    }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -101,9 +104,6 @@ fun CatalogScreen(onShowBasket: () -> Unit = {},onShowProductInfo: (Long) -> Uni
                 GetProductListByCategoryUseCase(basketRepository, productRepository, tagRepository, it).invoke {
                     productList.value = it as ArrayList<SelectedProductExtended>
                     mutableIsLoading.value = false
-                }
-                GetBasketPriceUseCase(basketRepository, productRepository).invoke{
-                    mutableBasketPrice.value = it
                 }
                 selectedCategory.value = it
             }

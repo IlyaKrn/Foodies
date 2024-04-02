@@ -30,7 +30,6 @@ fun ProductCountChangerBasket(
         .height(40.dp)
     ){
         Box(modifier = Modifier
-            .shadow(4.dp)
             .size(40.dp)
             .align(Alignment.CenterVertically)
             .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.small)
@@ -49,7 +48,6 @@ fun ProductCountChangerBasket(
             text = count.toString()
         )
         Box(modifier = Modifier
-            .shadow(4.dp)
             .size(40.dp)
             .align(Alignment.CenterVertically)
             .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.small)

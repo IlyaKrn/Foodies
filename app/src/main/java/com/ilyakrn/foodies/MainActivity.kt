@@ -1,9 +1,7 @@
 package com.ilyakrn.foodies
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.EnterTransition
@@ -11,13 +9,9 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.contentColorFor
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavDestination
-import androidx.navigation.NavGraph
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
@@ -32,7 +26,7 @@ import com.ilyakrn.foodies.ui.theme.FoodiesTheme
 import java.lang.Exception
 
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : ComponentActivity() {
+class MainActivity : ComponentActivity() {
 
     enum class Screens{
         Catalog,
@@ -48,7 +42,7 @@ class SplashActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val controller = NavHostController(this@SplashActivity)
+                    val controller = NavHostController(this@MainActivity)
                     controller.navigatorProvider.addNavigator(ComposeNavigator())
                     controller.navigatorProvider.addNavigator(DialogNavigator())
                     val mutableNext = remember {

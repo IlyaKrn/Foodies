@@ -30,7 +30,8 @@ fun ProductCountChangerCard(
         .height(40.dp)
     ){
         Box(modifier = Modifier
-            .shadow(4.dp)
+            .shadow(4.dp,
+                MaterialTheme.shapes.small)
             .size(40.dp)
             .align(Alignment.CenterStart)
             .background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)
@@ -48,7 +49,8 @@ fun ProductCountChangerCard(
             text = count.toString()
         )
         Box(modifier = Modifier
-            .shadow(4.dp)
+            .shadow(4.dp,
+                MaterialTheme.shapes.small)
             .size(40.dp)
             .align(Alignment.CenterEnd)
             .background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)

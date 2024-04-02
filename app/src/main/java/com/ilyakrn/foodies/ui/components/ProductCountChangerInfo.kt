@@ -35,7 +35,8 @@ fun ProductCountChangerInfo(
         .width(200.dp)
     ){
         Box(modifier = Modifier
-            .shadow(4.dp)
+            .shadow(4.dp,
+                MaterialTheme.shapes.small)
             .size(50.dp)
             .align(Alignment.CenterStart)
             .background(
@@ -56,7 +57,8 @@ fun ProductCountChangerInfo(
             text = count.toString()
         )
         Box(modifier = Modifier
-            .shadow(4.dp)
+            .shadow(4.dp,
+                MaterialTheme.shapes.small)
             .size(50.dp)
             .align(Alignment.CenterEnd)
             .background(MaterialTheme.colorScheme.primary, MaterialTheme.shapes.small)
