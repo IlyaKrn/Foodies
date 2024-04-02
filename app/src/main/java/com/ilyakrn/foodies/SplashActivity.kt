@@ -1,36 +1,112 @@
 package com.ilyakrn.foodies
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavDestination
+import androidx.navigation.NavGraph
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.compose.DialogNavigator
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.ilyakrn.foodies.ui.screens.BasketScreen
 import com.ilyakrn.foodies.ui.screens.CatalogScreen
+import com.ilyakrn.foodies.ui.screens.ProductInfoScreen
 import com.ilyakrn.foodies.ui.screens.SplashScreen
 import com.ilyakrn.foodies.ui.theme.FoodiesTheme
+import java.lang.Exception
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : ComponentActivity() {
+
+    enum class Screens{
+        Catalog,
+        ProductInfo,
+        Basket
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             FoodiesTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SplashScreen()
+                    val controller = NavHostController(this@SplashActivity)
+                    controller.navigatorProvider.addNavigator(ComposeNavigator())
+                    controller.navigatorProvider.addNavigator(DialogNavigator())
+                    val mutableNext = remember {
+                        mutableStateOf(false)
+                    }
                     Thread{
                         Thread.sleep(2000)
-                        val intent = Intent(this@SplashActivity, CatalogActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        mutableNext.value = true
                     }.start()
+                    if(mutableNext.value) {
+                        NavHost(
+                            modifier = Modifier.fillMaxSize(),
+                            navController = controller,
+                            startDestination = Screens.Catalog.name,
+                            enterTransition = {
+                                EnterTransition.None
+                            },
+                            exitTransition = {
+                                ExitTransition.None
+                            }) {
+                            composable(route = Screens.Catalog.name) {
+                                CatalogScreen(
+                                    onShowBasket = {
+                                        controller.navigate(Screens.Basket.name)
+                                    },
+                                    onShowProductInfo = {
+                                        controller.currentBackStackEntry?.savedStateHandle?.set("id", it)
+                                        controller.navigate(Screens.ProductInfo.name)
+                                    }
+                                )
+                            }
+                            composable(route = Screens.Basket.name) {
+                                BasketScreen(
+                                    onClose = {
+                                        controller.navigateUp()
+                                    },
+                                    onShowProductInfo = {
+                                        controller.currentBackStackEntry?.savedStateHandle?.set("id", it)
+                                        controller.navigate(Screens.ProductInfo.name)
+                                    }
+                                )
+                            }
+                            composable(route = Screens.ProductInfo.name) {
+                                var id = -1L
+                                if(controller.previousBackStackEntry != null && controller.previousBackStackEntry!!.savedStateHandle.get<Long?>("id") != null)
+                                    id = controller.previousBackStackEntry!!.savedStateHandle["id"]!!
+                                ProductInfoScreen(
+                                    id = id,
+                                    onClose = {
+                                        controller.navigateUp()
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    else{
+                        SplashScreen()
+                    }
                 }
             }
         }

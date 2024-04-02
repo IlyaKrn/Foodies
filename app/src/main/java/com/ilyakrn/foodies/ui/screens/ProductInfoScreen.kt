@@ -203,36 +203,36 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
                         )
                     }
                 }
-            }
-        }
-        Column(modifier = Modifier
-            .width(76.dp)
-            .padding(16.dp)
-        ){
-            Box(modifier = Modifier
-                .size(40.dp)
-                .shadow(8.dp)
-                .background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.extraLarge)
-                .clickable {
-                    onClose()
+                Column(modifier = Modifier
+                    .width(76.dp)
+                    .padding(16.dp)
+                ){
+                    Box(modifier = Modifier
+                        .size(40.dp)
+                        .shadow(8.dp)
+                        .background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.extraLarge)
+                        .clickable {
+                            onClose()
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .align(Alignment.Center),
+                            painter = painterResource(id = R.drawable.back),
+                            contentDescription = "remove"
+                        )
+                    }
+                    var spicy = false
+                    var vegetarian = false
+                    product.value!!.product.tags.forEach {
+                        if (it.id == 2L)
+                            vegetarian = true
+                        if (it.id == 4L)
+                            spicy = true
+                    }
+                    ProductProperties(discount = product.value!!.product.priceOld != -1, spicy = spicy, vegetarian = vegetarian)
                 }
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .align(Alignment.Center),
-                    painter = painterResource(id = R.drawable.back),
-                    contentDescription = "remove"
-                )
             }
-            var spicy = false
-            var vegetarian = false
-            product.value!!.product.tags.forEach {
-                if (it.id == 2L)
-                    vegetarian = true
-                if (it.id == 4L)
-                    spicy = true
-            }
-            ProductProperties(discount = product.value!!.product.priceOld != -1, spicy = spicy, vegetarian = vegetarian)
         }
     }
 
