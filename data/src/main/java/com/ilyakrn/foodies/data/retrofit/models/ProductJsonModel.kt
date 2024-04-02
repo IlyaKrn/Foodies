@@ -1,5 +1,6 @@
 package com.ilyakrn.foodies.data.retrofit.models
 
+//модель продукта для парсинга из json
 data class ProductJsonModel(
     val id: Long?,
     val category_id: Long?,

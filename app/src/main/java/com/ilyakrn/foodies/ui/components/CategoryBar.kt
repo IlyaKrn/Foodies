@@ -25,6 +25,7 @@ import com.ilyakrn.foodies.domain.models.extended.SelectedProductExtended
 import com.ilyakrn.foodies.domain.usecases.GetBasketPriceUseCase
 import com.ilyakrn.foodies.domain.usecases.GetProductListByCategoryUseCase
 
+//панель со списком категорий
 @Composable
 fun CategoryBar(
     categories: List<Category>,

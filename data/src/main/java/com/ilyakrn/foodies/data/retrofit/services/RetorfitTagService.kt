@@ -6,6 +6,7 @@ import com.ilyakrn.foodies.domain.models.core.Tag
 import retrofit2.Call
 import retrofit2.http.GET
 
+//запросы к тегам
 interface RetorfitTagService {
     @GET(GET_TAG_LIST)
     fun getTagList(): Call<List<TagJsonModel>>

@@ -4,6 +4,7 @@ import com.ilyakrn.foodies.domain.models.extended.SelectedProductExtended
 import com.ilyakrn.foodies.domain.repositories.BasketRepository
 import com.ilyakrn.foodies.domain.repositories.ProductRepository
 
+//получение стоимости корзины
 class GetBasketPriceUseCase(private val basketRepository: BasketRepository, private val productRepository: ProductRepository) {
 
     fun invoke(listener: (Int) -> Unit){

@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilyakrn.foodies.R
 
+//верхняя панель корзины
 @Preview
 @Composable
 fun BasketTopBar(
@@ -34,6 +35,7 @@ fun BasketTopBar(
         .background(MaterialTheme.colorScheme.background)
         .height(56.dp)
     ){
+        //кнопка назад
         Icon(modifier = Modifier
             .padding(16.dp)
             .align(Alignment.CenterVertically)
@@ -45,7 +47,7 @@ fun BasketTopBar(
             contentDescription = "settings"
         )
         Spacer(modifier = Modifier.width(16.dp))
-
+        // надпись "Корзина"
         Text(modifier = Modifier
             .align(Alignment.CenterVertically),
             text = stringResource(R.string.basket),

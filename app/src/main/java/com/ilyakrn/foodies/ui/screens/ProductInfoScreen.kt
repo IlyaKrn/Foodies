@@ -53,21 +53,26 @@ import com.ilyakrn.foodies.ui.components.ProductInfoParam
 import com.ilyakrn.foodies.ui.components.ProductProperties
 import com.ilyakrn.foodies.ui.getPriceFromInt
 
+//карточка продукта
 @Preview
 @Composable
 fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
 
+    //продукт
     val product = remember {
         mutableStateOf<SelectedProductExtended?>(null)
     }
+    //загружаются ли данные
     val mutableIsLoading = remember {
         mutableStateOf(true)
     }
 
+    //репозитории
     val productRepository = ProductRepositoryImpl()
     val tagRepository = TagRepositoryImpl()
     val basketRepository = BasketRepositoryImpl()
 
+    //загрузка продукта
     GetProductByIdUseCase(basketRepository, productRepository, tagRepository, id).invoke {
         product.value = it
         mutableIsLoading.value = false
@@ -77,36 +82,44 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
     ){
+        //если нет продукта
         if(product.value == null){
+            //если идет загрузка
             if(mutableIsLoading.value){
+                //прогрксс бар
                 CircularProgressIndicator(modifier = Modifier
                     .align(Alignment.Center)
                 )
             }
+            //если не идет загрузка
             else{
+                //сообщение об отсутствии данных
                 Text(modifier = Modifier
                     .align(Alignment.Center),
                     text = stringResource(id = R.string.no_product_data)
                 )
             }
-        } else{
+        }
+        //если есть продукт
+        else{
             Box{
                 Column(modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
                 ){
+                    //изображение
                     Image(modifier = Modifier
                         .fillMaxWidth()
                         .height(LocalConfiguration.current.screenWidthDp.dp),
                         painter = painterResource(id = R.drawable.img),
                         contentDescription = "image"
                     )
-
+                    //название
                     Text(modifier = Modifier.padding(16.dp, 0.dp),
                         text = product.value!!.product.name,
                         style = MaterialTheme.typography.displaySmall
                     )
-
+                    //описание
                     Text(modifier = Modifier.padding(16.dp, 0.dp),
                         text = product.value!!.product.description,
                         style = MaterialTheme.typography.bodyLarge,
@@ -114,7 +127,7 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
-
+                    //свойства
                     Spacer(modifier = Modifier
                         .height(1.dp)
                         .fillMaxWidth()
@@ -149,6 +162,7 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
 
                 Box(modifier = Modifier.align(Alignment.BottomCenter)){
 
+                    //если продукта нет в корзине
                     AnimatedVisibility(modifier = Modifier.align(Alignment.BottomCenter),
                         visible = product.value!!.count == 0,
                         enter = fadeIn(),
@@ -172,6 +186,7 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
                             }
                         )
                     }
+                    //если продукт есть в корзине
                     AnimatedVisibility(modifier = Modifier.align(Alignment.BottomCenter),
                         visible = product.value!!.count != 0,
                         enter = fadeIn(),
@@ -207,6 +222,7 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
                     .width(76.dp)
                     .padding(16.dp)
                 ){
+                    //кнопка назад
                     Box(modifier = Modifier
                         .size(40.dp)
                         .shadow(8.dp)
@@ -222,6 +238,7 @@ fun ProductInfoScreen(id: Long = -1L, onClose: () -> Unit = {}) {
                             contentDescription = "remove"
                         )
                     }
+                    //теги
                     var spicy = false
                     var vegetarian = false
                     product.value!!.product.tags.forEach {

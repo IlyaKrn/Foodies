@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilyakrn.foodies.R
 
+//верхняя панель экрана категорий
 @Preview
 @Composable
 fun MainTopBar(
@@ -27,6 +28,7 @@ fun MainTopBar(
         .background(MaterialTheme.colorScheme.background)
         .height(60.dp)
     ){
+        //фильтры
         Icon(modifier = Modifier
             .padding(18.dp)
             .align(Alignment.CenterStart)
@@ -37,12 +39,14 @@ fun MainTopBar(
             tint = MaterialTheme.colorScheme.secondary,
             contentDescription = "settings"
         )
+        //лого
         Icon(modifier = Modifier
             .align(Alignment.Center),
             painter = painterResource(id = R.drawable.logo_top_bar),
             tint = MaterialTheme.colorScheme.primary,
             contentDescription = "settings"
         )
+        //поиск
         Icon(modifier = Modifier
             .padding(18.dp)
             .align(Alignment.CenterEnd)

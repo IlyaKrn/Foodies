@@ -13,6 +13,7 @@ import coil.size.Size
 import com.ilyakrn.foodies.R
 import java.lang.reflect.Modifier
 
+//отображение гифок
 @Composable
 fun GifImage(resId: Int) {
     val context = LocalContext.current

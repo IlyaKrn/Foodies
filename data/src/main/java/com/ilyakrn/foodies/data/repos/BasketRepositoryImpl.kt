@@ -4,6 +4,7 @@ import com.ilyakrn.foodies.data.basket.Basket
 import com.ilyakrn.foodies.domain.models.core.SelectedProduct
 import com.ilyakrn.foodies.domain.repositories.BasketRepository
 
+//репозиторий корзины
 class BasketRepositoryImpl() : BasketRepository {
     override fun getSelectedProductList(): List<SelectedProduct>{
         return Basket.getSelectedProductList()

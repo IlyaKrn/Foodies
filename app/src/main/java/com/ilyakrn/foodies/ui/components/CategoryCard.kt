@@ -19,9 +19,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilyakrn.foodies.domain.models.core.Category
 
+//элемент списка категорий
 @Composable
 fun CategoryCard(category: Category, isSelected: Boolean = false, onClick: () -> Unit = {}){
     Box{
+        //если категория выделена
         AnimatedVisibility(
             visible = isSelected,
             enter = fadeIn(),
@@ -49,6 +51,7 @@ fun CategoryCard(category: Category, isSelected: Boolean = false, onClick: () ->
                 )
             }
         }
+        //если категория не выделена
         AnimatedVisibility(
             visible = !isSelected,
             enter = fadeIn(),

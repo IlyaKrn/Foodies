@@ -8,6 +8,7 @@ import com.ilyakrn.foodies.domain.repositories.BasketRepository
 import com.ilyakrn.foodies.domain.repositories.ProductRepository
 import com.ilyakrn.foodies.domain.repositories.TagRepository
 
+//получение списка продуктов по категории
 class GetProductListByCategoryUseCase(private val basketRepository: BasketRepository, private val productRepository: ProductRepository, private val tagRepository: TagRepository, private val categoryId: Long) {
 
     fun invoke(listener: (List<SelectedProductExtended>) -> Unit){

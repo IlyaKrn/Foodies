@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilyakrn.foodies.R
 
+//панель изменения колличества продукта в корзине (из каталога)
 @Preview
 @Composable
 fun ProductCountChangerCard(
@@ -29,6 +30,7 @@ fun ProductCountChangerCard(
         .width(148.dp)
         .height(40.dp)
     ){
+        //уменьшить
         Box(modifier = Modifier
             .shadow(4.dp,
                 MaterialTheme.shapes.small)
@@ -44,10 +46,12 @@ fun ProductCountChangerCard(
                 contentDescription = "remove",
             )
         }
+        //колличество продукта
         Text(modifier = Modifier
             .align(Alignment.Center),
             text = count.toString()
         )
+        //увеличить
         Box(modifier = Modifier
             .shadow(4.dp,
                 MaterialTheme.shapes.small)

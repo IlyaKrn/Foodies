@@ -1,5 +1,6 @@
 package com.ilyakrn.foodies.ui
 
+//получение строки цены из копеек
 fun getPriceFromInt(price: Int): String{
     val rubles = price / 100
     val cops = price % 100

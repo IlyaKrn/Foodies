@@ -9,6 +9,7 @@ import com.ilyakrn.foodies.domain.repositories.BasketRepository
 import com.ilyakrn.foodies.domain.repositories.ProductRepository
 import com.ilyakrn.foodies.domain.repositories.TagRepository
 
+//получение продукта по id
 class GetProductByIdUseCase(private val basketRepository: BasketRepository, private val productRepository: ProductRepository, private val tagRepository: TagRepository, private val productId: Long) {
 
     fun invoke(listener: (SelectedProductExtended?) -> Unit){

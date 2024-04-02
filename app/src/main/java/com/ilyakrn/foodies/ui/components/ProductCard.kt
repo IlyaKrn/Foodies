@@ -27,6 +27,7 @@ import com.ilyakrn.foodies.R
 import com.ilyakrn.foodies.domain.models.extended.SelectedProductExtended
 import com.ilyakrn.foodies.ui.getPriceFromInt
 
+//элемент списка продуктов
 @Composable
 fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemove: () -> Unit = {}, onClick: () -> Unit = {}) {
 
@@ -39,6 +40,7 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
             .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.small)
             .clickable { onClick() }
         ){
+            //изображение
             Image(modifier = Modifier
                 .fillMaxWidth(),
                 painter = painterResource(id = R.drawable.img),
@@ -47,11 +49,13 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
             Column(modifier = Modifier
                 .padding(16.dp)
             ){
+                //название
                 Text(
                     text = product.product.name,
                     style = MaterialTheme.typography.labelLarge
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+                //вес (объем)
                 Text(
                     text = "${product.product.measure} ${product.product.measureUnit}",
                     style = MaterialTheme.typography.bodySmall,
@@ -60,6 +64,7 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Box{
+                    //если нет в корзине
                     this@Column.AnimatedVisibility(
                         modifier = Modifier.align(Alignment.BottomCenter),
                         visible = product.count == 0,
@@ -67,6 +72,7 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                         exit = fadeOut()
                     ) {
                         Box(modifier = Modifier.height(40.dp)){
+                            //кнопка добавления в корзину
                             Box(modifier = Modifier
                                 .shadow(4.dp,
                                     MaterialTheme.shapes.small)
@@ -83,6 +89,7 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                                 }
                             ) {
                                 Row(modifier = Modifier.align(Alignment.Center)) {
+                                    //цена и старая цена (если есть)
                                     Text(
                                         text = getPriceFromInt(product.product.priceCurrent),
                                         style = MaterialTheme.typography.bodyMedium
@@ -100,6 +107,7 @@ fun ProductCard(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemo
                         }
 
                     }
+                    //если есть в корзине
                     this@Column.AnimatedVisibility(
                         modifier = Modifier.align(Alignment.BottomCenter),
                         visible = product.count != 0,

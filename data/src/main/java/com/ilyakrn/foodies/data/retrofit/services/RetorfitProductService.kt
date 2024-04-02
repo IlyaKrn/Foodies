@@ -6,6 +6,7 @@ import com.ilyakrn.foodies.domain.models.core.Product
 import retrofit2.Call
 import retrofit2.http.GET
 
+//запросы к продуктам
 interface RetorfitProductService {
     @GET(GET_PRODUCT_LIST)
     fun getProductList(): Call<List<ProductJsonModel>>

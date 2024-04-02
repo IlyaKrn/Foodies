@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.ilyakrn.foodies.R
 import com.ilyakrn.foodies.ui.components.GifImage
 
+//начальный экран
 @Preview
 @Composable
 fun SplashScreen() {
@@ -19,6 +20,7 @@ fun SplashScreen() {
         .background(MaterialTheme.colorScheme.primary)
     ){
 
+        //анимация
         Box(modifier = Modifier.align(Alignment.Center)){
             GifImage(R.drawable.animation)
         }

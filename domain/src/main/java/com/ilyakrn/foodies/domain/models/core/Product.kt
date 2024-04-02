@@ -1,5 +1,6 @@
 package com.ilyakrn.foodies.domain.models.core
 
+//модель продукта
 data class Product(
     val id: Long,
     val categoryId: Long,

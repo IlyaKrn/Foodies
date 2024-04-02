@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilyakrn.foodies.R
 
+//нижняя кнопка
 @Composable
 fun BottomButton(onClick: () -> Unit = {}, text: String = "", iconId: Int? = null) {
     Box(modifier = Modifier
@@ -42,6 +43,7 @@ fun BottomButton(onClick: () -> Unit = {}, text: String = "", iconId: Int? = nul
             }
         ) {
             Row(modifier = Modifier.align(Alignment.Center)){
+                //иконка (если есть)
                 iconId?.let {
                     Icon(
                         painter = painterResource(id = iconId),
@@ -50,6 +52,7 @@ fun BottomButton(onClick: () -> Unit = {}, text: String = "", iconId: Int? = nul
                     )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
+                //текст
                 Text(
                     text = text,
                     style = MaterialTheme.typography.titleMedium,

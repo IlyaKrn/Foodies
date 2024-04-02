@@ -9,6 +9,7 @@ import com.ilyakrn.foodies.domain.repositories.BasketRepository
 import com.ilyakrn.foodies.domain.repositories.ProductRepository
 import com.ilyakrn.foodies.domain.repositories.TagRepository
 
+//удаление продукта из корзины
 class RemoveProductFromBasketUseCase(private val basketRepository: BasketRepository, private val productId: Long) {
 
     fun invoke() {

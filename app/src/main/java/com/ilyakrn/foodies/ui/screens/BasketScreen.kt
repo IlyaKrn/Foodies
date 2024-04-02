@@ -34,30 +34,37 @@ import com.ilyakrn.foodies.ui.components.BasketTopBar
 import com.ilyakrn.foodies.ui.components.BottomButton
 import com.ilyakrn.foodies.ui.getPriceFromInt
 
+//экран корзины
 @Preview
 @Composable
 fun BasketScreen(onClose: () -> Unit = {}, onShowProductInfo: (Long) -> Unit = {}) {
 
+    //репозитории
     val categoryRepository = CategoryRepositoryImpl()
     val productRepository = ProductRepositoryImpl()
     val tagRepository = TagRepositoryImpl()
     val basketRepository = BasketRepositoryImpl()
 
 
+    //список продуктов
     val productList = remember {
         mutableStateOf(ArrayList<SelectedProductExtended>())
     }
+    //цена корзины
     val mutableBasketPrice = remember {
         mutableStateOf(0)
     }
+    //идет ли загрузка
     val mutableIsLoading = remember {
         mutableStateOf(true)
     }
 
+    //загрузка списка продуктов
     GetBasketListUseCase(productRepository, tagRepository, basketRepository).invoke {
         productList.value = it as ArrayList<SelectedProductExtended>
         mutableIsLoading.value = false
     }
+    //загрузка цены корзины
     GetBasketPriceUseCase(basketRepository, productRepository).invoke {
         mutableBasketPrice.value = it
     }
@@ -66,25 +73,32 @@ fun BasketScreen(onClose: () -> Unit = {}, onShowProductInfo: (Long) -> Unit = {
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
     ){
+        //верхняя панель
         BasketTopBar(
             onClose = onClose
         )
         Box(modifier = Modifier
             .fillMaxSize()
         ){
+            //если список пуст
             if(productList.value.isEmpty()) {
+                //если идет загрузка
                 if(mutableIsLoading.value){
+                    //прогресс бар
                     CircularProgressIndicator(modifier = Modifier
                         .align(Alignment.Center)
                     )
                 }
+                //если загрузка завершена
                 else{
+                    //сообщение об отсутствии продуктов в корзине
                     Text(modifier = Modifier
                         .align(Alignment.Center),
                         text = stringResource(id = R.string.no_products_in_basket)
                     )
                 }
             }
+            //если список не пуст
             else{
                 Column {
                     LazyColumn(
@@ -95,6 +109,7 @@ fun BasketScreen(onClose: () -> Unit = {}, onShowProductInfo: (Long) -> Unit = {
                             BasketItem(
                                 product = it,
                                 onAdd = {
+                                    //увеличение колличества и обновление данных
                                     AddProductToBasketUseCase(basketRepository, it.product.id).invoke()
                                     GetBasketListUseCase(productRepository, tagRepository, basketRepository).invoke {
                                         mutableIsLoading.value = false
@@ -105,6 +120,7 @@ fun BasketScreen(onClose: () -> Unit = {}, onShowProductInfo: (Long) -> Unit = {
                                     }
                                 },
                                 onRemove = {
+                                    //уменьшение колличества и обновление данных
                                     RemoveProductFromBasketUseCase(basketRepository,  it.product.id).invoke()
                                     GetBasketListUseCase(productRepository, tagRepository, basketRepository).invoke {
                                         mutableIsLoading.value = false
@@ -115,6 +131,7 @@ fun BasketScreen(onClose: () -> Unit = {}, onShowProductInfo: (Long) -> Unit = {
                                     }
                                 },
                                 onClick = {
+                                    //открыть карточку продукта
                                     onShowProductInfo(it.product.id)
                                 }
                             )
@@ -122,6 +139,7 @@ fun BasketScreen(onClose: () -> Unit = {}, onShowProductInfo: (Long) -> Unit = {
                     }
                 }
             }
+            //если корзина не пуста
             if(mutableBasketPrice.value != 0) {
                 Box(
                     modifier = Modifier

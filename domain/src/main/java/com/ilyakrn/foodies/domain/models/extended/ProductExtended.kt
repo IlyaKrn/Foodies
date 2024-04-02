@@ -2,6 +2,7 @@ package com.ilyakrn.foodies.domain.models.extended
 
 import com.ilyakrn.foodies.domain.models.core.Tag
 
+//модель продукта с тегами вместо списка id тегов
 data class ProductExtended(
     val id: Long,
     val categoryId: Long,

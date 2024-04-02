@@ -6,6 +6,7 @@ import com.ilyakrn.foodies.domain.models.core.Category
 import retrofit2.Call
 import retrofit2.http.GET
 
+//запросы к категориям
 interface RetorfitCategoryService {
     @GET(GET_CATEGORY_LIST)
     fun getCategoryList(): Call<List<CategoryJsonModel>>

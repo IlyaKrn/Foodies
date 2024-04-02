@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+//элемент списка свойств продукта в карточке
 @Composable
 fun ProductInfoParam(param: String, value: String) {
     Box(modifier = Modifier
@@ -29,6 +30,7 @@ fun ProductInfoParam(param: String, value: String) {
             .padding(16.dp, 0.dp)
             .align(Alignment.Center)
         ) {
+            //свойство
             Text(modifier =
             Modifier.align(Alignment.CenterStart),
                 text = param,
@@ -36,6 +38,7 @@ fun ProductInfoParam(param: String, value: String) {
                 color = MaterialTheme.colorScheme.tertiary,
                 textAlign = TextAlign.Center
             )
+            //значение
             Text(modifier = Modifier.align(Alignment.CenterEnd),
                 text = value,
                 style = MaterialTheme.typography.bodyLarge

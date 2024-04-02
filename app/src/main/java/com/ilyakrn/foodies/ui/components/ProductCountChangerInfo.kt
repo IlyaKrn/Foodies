@@ -23,6 +23,7 @@ import com.ilyakrn.foodies.domain.usecases.AddProductToBasketUseCase
 import com.ilyakrn.foodies.domain.usecases.GetProductByIdUseCase
 import com.ilyakrn.foodies.domain.usecases.RemoveProductFromBasketUseCase
 
+//панель изменения колличества продукта в корзине (из карточки продукта)
 @Preview
 @Composable
 fun ProductCountChangerInfo(
@@ -34,6 +35,7 @@ fun ProductCountChangerInfo(
         .padding(16.dp)
         .width(200.dp)
     ){
+        //уменьшить
         Box(modifier = Modifier
             .shadow(4.dp,
                 MaterialTheme.shapes.small)
@@ -52,10 +54,12 @@ fun ProductCountChangerInfo(
                 contentDescription = "remove",
             )
         }
+        //колличество продукта
         Text(modifier = Modifier
             .align(Alignment.Center),
             text = count.toString()
         )
+        //увеличить
         Box(modifier = Modifier
             .shadow(4.dp,
                 MaterialTheme.shapes.small)

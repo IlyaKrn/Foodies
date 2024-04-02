@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilyakrn.foodies.R
 
+//панель изменения колличества продукта в корзине (из корзины)
 @Composable
 fun ProductCountChangerBasket(
     count: Int,
@@ -29,6 +30,7 @@ fun ProductCountChangerBasket(
     Row(modifier = Modifier
         .height(40.dp)
     ){
+        //уменьшить
         Box(modifier = Modifier
             .size(40.dp)
             .align(Alignment.CenterVertically)
@@ -42,11 +44,13 @@ fun ProductCountChangerBasket(
                 contentDescription = "remove",
             )
         }
+        //колличество продукта
         Text(modifier = Modifier
             .padding(16.dp, 0.dp)
             .align(Alignment.CenterVertically),
             text = count.toString()
         )
+        //увеличить
         Box(modifier = Modifier
             .size(40.dp)
             .align(Alignment.CenterVertically)

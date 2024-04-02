@@ -28,10 +28,10 @@ import com.ilyakrn.foodies.domain.models.extended.ProductExtended
 import com.ilyakrn.foodies.domain.models.extended.SelectedProductExtended
 import com.ilyakrn.foodies.ui.getPriceFromInt
 
-@Preview
+
+//элемент списка корзинв
 @Composable
-fun BasketItem(product: SelectedProductExtended = SelectedProductExtended(ProductExtended(1, 1, "Пицца с ветчиной и грибами 32 см", "jlkjklhnflkdfh dh dg hjdgj dhj dghj dj  d fdj d dg djg ", "1", 1, 1 ,1 ,"g" ,10.1 ,10.1 ,10.1 ,10.1 ,
-    listOf() ), 1), onAdd: () -> Unit = {}, onRemove: () -> Unit = {}, onClick: () -> Unit = {}) {
+fun BasketItem(product: SelectedProductExtended, onAdd: () -> Unit = {}, onRemove: () -> Unit = {}, onClick: () -> Unit = {}) {
 
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -42,6 +42,7 @@ fun BasketItem(product: SelectedProductExtended = SelectedProductExtended(Produc
             .height(129.dp)
             .padding(16.dp)
         ) {
+            //изображение
             Image(modifier = Modifier
                 .fillMaxHeight(),
                 painter = painterResource(id = R.drawable.img),
@@ -51,6 +52,7 @@ fun BasketItem(product: SelectedProductExtended = SelectedProductExtended(Produc
             Box(modifier = Modifier
                 .fillMaxSize()
             ) {
+                //название
                 Text(
                     text = product.product.name,
                     style = MaterialTheme.typography.labelLarge
@@ -59,6 +61,7 @@ fun BasketItem(product: SelectedProductExtended = SelectedProductExtended(Produc
                     .align(Alignment.BottomStart)
                     .fillMaxWidth(),
                 ){
+                    //изменение колличества
                     ProductCountChangerBasket(
                         count = product.count,
                         onAdd = {
@@ -71,6 +74,7 @@ fun BasketItem(product: SelectedProductExtended = SelectedProductExtended(Produc
                     Column(modifier = Modifier
                         .align(Alignment.CenterEnd)
                     ){
+                        //цена и старая цена (если есть)
                         Text(modifier = Modifier.align(Alignment.End),
                             text = getPriceFromInt(product.product.priceCurrent),
                             style = MaterialTheme.typography.bodyLarge
