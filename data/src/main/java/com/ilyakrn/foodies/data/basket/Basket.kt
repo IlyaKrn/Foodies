@@ -17,7 +17,9 @@ object Basket {
         basket.removeIf { it.productId == productId }
     }
     fun editSelectedProduct(product: SelectedProduct){
-        basket.removeIf { it.productId == product.productId }
-        basket.add(product)
+        basket.forEach {
+            if(it.productId == product.productId)
+                it.count = product.count
+        }
     }
 }
